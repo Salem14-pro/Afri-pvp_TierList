@@ -224,23 +224,19 @@ body {
 /* Gamemode Tabs */
 .gamemode-tabs {
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.gamemode-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .gamemode-tab {
-    padding: 10px 20px;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-primary);
-    border-radius: 8px;
-    color: var(--text-secondary);
-    font-size: 14px;
-    font-weight: 600;
-    font-family: var(--font-family);
-    cursor: pointer;
-    transition: all 150ms ease-in-out;
-    white-space: nowrap;
+    flex: 0 0 auto; /* Prevent shrinking */
 }
+
 
 .gamemode-tab:hover {
     background-color: var(--bg-tertiary);
@@ -1164,3 +1160,76 @@ body {
     color: transparent;
     -webkit-text-fill-color: transparent;
 }
+
+@media (max-width: 768px) {
+
+    .rankings-header {
+        display: none; /* Hide table header */
+    }
+
+    .ranking-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 6px;
+    }
+
+    .rank-number {
+        font-size: 14px;
+    }
+
+    .player-name-cell {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .region-cell,
+    .score-cell {
+        font-size: 13px;
+        opacity: 0.8;
+    }
+
+}
+
+
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .nav {
+        display: none; /* hide nav links on mobile */
+    }
+
+    .discord-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .controls-section {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .search-wrapper {
+        width: 100%;
+    }
+
+
+    @media (max-width: 1024px) {
+
+    .tier-columns-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .tier-column {
+        width: 100%;
+    }
+
+}
+
