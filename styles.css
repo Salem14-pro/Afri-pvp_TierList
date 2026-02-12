@@ -522,9 +522,6 @@ body {
         grid-template-columns: 50px 1fr 90px 100px;
     }
     
-    .tier-columns-container {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
 }
 
 @media (max-width: 768px) {
@@ -1218,18 +1215,195 @@ body {
         width: 100%;
     }
 
+/* ============================= */
+/*  COMPACT MOBILE MODE (STRICT) */
+/* ============================= */
 
-    @media (max-width: 1024px) {
+@media (max-width: 768px) {
+
+    body {
+        font-size: 13px;
+    }
+
+    /* ---------- Header ---------- */
+
+    .header {
+        height: 56px;
+    }
+
+    .header-container {
+        padding: 0 14px;
+    }
+
+    .logo-text {
+        font-size: 14px;
+    }
+
+    .discord-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* ---------- Page Header ---------- */
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+    }
+
+    /* ---------- Search ---------- */
+
+    .search-input {
+        height: 36px;
+        font-size: 13px;
+    }
+
+    /* ---------- Gamemode Tabs ---------- */
+
+    .gamemode-tab {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .gamemode-tab-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .gamemode-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* ================================= */
+    /*  OVERALL PAGE COMPACT STRUCTURE   */
+    /* ================================= */
+
+    .overall-card {
+        grid-template-columns: 50px 1fr 70px 80px;
+        padding: 12px 14px;
+        margin: 8px 10px;
+        border-radius: 10px;
+    }
+
+    .overall-rank {
+        font-size: 14px;
+    }
+
+    .overall-name {
+        font-size: 14px;
+    }
+
+    .overall-subtitle {
+        font-size: 11px;
+    }
+
+    .overall-region {
+        font-size: 11px;
+        padding: 4px 6px;
+    }
+
+    .overall-score {
+        font-size: 14px;
+    }
+
+    /* ================================= */
+    /*  TIER COLUMNS — SIDE BY SIDE     */
+    /* ================================= */
 
     .tier-columns-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(5, 180px); /* FORCE 5 COLUMNS */
+        gap: 10px;
+        padding: 10px;
+        overflow-x: auto; /* allow scroll */
     }
 
     .tier-column {
-        width: 100%;
+        padding: 8px;
+        border-radius: 10px;
+    }
+
+    .tier-title {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    /* ---------- Player Row Compact ---------- */
+
+    .player-row {
+        padding: 8px 10px;
+        border-radius: 8px;
+    }
+
+    .player-name {
+        font-size: 12px;
+    }
+
+    .tier-badge {
+        font-size: 11px;
+        right: 12px;
+    }
+
+    .tier-indicator {
+        width: 3px;
+    }
+
+    /* ================================= */
+    /*  PROFILE MODAL COMPACT           */
+    /* ================================= */
+
+    .player-modal-content {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .profile-name {
+        font-size: 18px;
+    }
+
+    .profile-rank {
+        font-size: 12px;
+    }
+
+    .profile-stats {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 10px;
+    }
+
+    .stat-value {
+        font-size: 14px;
+    }
+
+    .profile-gamemodes {
+        gap: 10px;
+    }
+
+    .profile-gm-card {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .profile-gm-icon {
+        width: 22px;
+        height: 22px;
+        margin-bottom: 6px;
+    }
+
+    .profile-gm-tier {
+        font-size: 12px;
+    }
+
+    .profile-gm-points {
+        font-size: 10px;
     }
 
 }
+
 
