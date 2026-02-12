@@ -45,51 +45,18 @@ class CentralTierListApp {
         
         const gamemodes = DataAPI.getGamemodes();
         
-       tabsContainer.innerHTML = gamemodes.map(gamemode => `
+        tabsContainer.innerHTML = gamemodes.map(gamemode => `
     <button 
         class="gamemode-tab ${gamemode.id === this.currentGamemode ? 'active' : ''}"
         data-gamemode="${gamemode.id}"
         onclick="app.switchGamemode('${gamemode.id}')"
     >
-        <img src="icons/${gamemode.id}.svg" class="gamemode-tab-icon">
+        <img src="icons/${gamemode.id}.svg" class="gamemode-tab-icon" alt="${gamemode.name}">
         ${this.escapeHtml(gamemode.name)}
     </button>
 `).join('');
-
-// Reworking those svgs into icons and adding alt text would be a good idea for 
-// accessibility and maintainability. You can create simple icon files (e.g., 
-// `gm_overall.png`, `gm_duels.png`, etc.) and place them in an `icons` directory.
-//  Then, update the `renderGamemodeTabs` method to use these icons instead of 
-// inline SVGs. This will also allow you to easily update the icons in the 
-// future without modifying the JavaScript code.
-
-const GAMEMODE_ICONS = {
-  gm_sword: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 21L12 3l10 18H2z" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_axe: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 21l9-18 9 18H3z" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_pot: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_nethpot: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_mace: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_crystal: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,12 12,22 2,12" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_uhc: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 12h20" stroke="currentColor" stroke-width="2"/></svg>`,
-  gm_smp: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2"/></svg>`
-};
-
-function renderGamemodeTabs() {
-  const container = document.getElementById('gamemodeTabs');
-  const gamemodes = DataAPI.getGamemodes();
-
-  container.innerHTML = gamemodes.map(gm => `
-    <button 
-      class="gamemode-tab ${gm.id === app.currentGamemode ? 'active' : ''}"
-      onclick="app.switchGamemode('${gm.id}')"
-    >
-      <span class="gamemode-icon">${GAMEMODE_ICONS[gm.id] || ''}</span>
-      <span class="gamemode-label">${gm.name}</span>
-    </button>
-  `).join('');
-}
-
     }
+    
     
     switchGamemode(gamemodeId) {
         this.currentGamemode = gamemodeId;
@@ -143,7 +110,11 @@ renderRankings() {
 `;
     const bodyHTML = `
         <div class="rankings-body">
-            ${players.map((player, index) => this.renderOverallRow(player, index + 1)).join('')}
+            ${players.map((player) => {
+                // Find actual rank from full sorted list, not filtered position
+                const actualRank = this.allPlayersSorted.findIndex(p => p.id === player.id) + 1;
+                return this.renderOverallRow(player, actualRank);
+            }).join('')}
         </div>
     `;
 
@@ -214,7 +185,7 @@ getRankTitle(points) {
 
     players.forEach(player => {
         const ranking = player.gamemodeRankings[this.currentGamemode];
-        if (!ranking) return;
+        if (!ranking || ranking.tierId === "-") return;
 
         // Extract tier number (1–5)
         const tierNumber = ranking.tierId.slice(-1);
@@ -234,6 +205,11 @@ getRankTitle(points) {
     const sortedTiers = Object.keys(tierMap)
         .map(Number)
         .sort((a, b) => a - b);
+
+    if (sortedTiers.length === 0) {
+        container.innerHTML = this.renderEmptyState('No players ranked in this gamemode yet');
+        return;
+    }
 
     container.innerHTML = `
         <div class="tier-columns-container">
@@ -318,14 +294,14 @@ let app;
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         app = new CentralTierListApp();
+        window.app = app;
+        window.DataAPI = DataAPI;
     });
 } else {
     app = new CentralTierListApp();
+    window.app = app;
+    window.DataAPI = DataAPI;
 }
-
-// Export for debugging
-window.app = app;
-window.DataAPI = DataAPI;
 
 // Add method to show player stats
 CentralTierListApp.prototype.showPlayerStats = function(playerId) {

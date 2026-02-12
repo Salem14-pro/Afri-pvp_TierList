@@ -261,7 +261,7 @@ body {
 /* Tier Columns Layout */
 .tier-columns-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 1px;
     background-color: var(--border-primary);
 }
@@ -617,7 +617,7 @@ body {
     }
     
     .tier-columns-container {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(5, 1fr);
     }
     
     .tier-column-header {
@@ -729,7 +729,7 @@ body {
 
 .tier-columns-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px; /* increased space between columns */
     padding: 16px;
 }
@@ -882,7 +882,7 @@ body {
     right: 20px;
     opacity: 0;
     font-weight: bold;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, right 0.3s ease;
 }
 
 .high-tier .tier-badge {
@@ -899,6 +899,7 @@ body {
 
 .player-row:hover .tier-badge {
     opacity: 1;
+    right: 3px;
 }
 
 .overall-header {
@@ -961,6 +962,7 @@ body {
 .overall-region.AS { background: rgba(255,200,80,0.15); color:#ffc85c; }
 .overall-region.SA { background: rgba(180,80,255,0.15); color:#c05cff; }
 .overall-region.OCE { background: rgba(80,160,255,0.15); color:#5caeff; }
+.overall-region.NG { background: rgba(15,100,50,0.25); color:#1aff66; }
 
 .overall-score {
     font-weight: 800;
@@ -1103,7 +1105,6 @@ body {
 }
 
 /* Others normal */
-.rank-novice,
 .rank-rookie {
     color: var(--text-secondary);
 }
@@ -1113,7 +1114,8 @@ body {
 .rank-ace,
 .rank-specialist,
 .rank-cadet,
-.rank-grandmaster {
+.rank-grandmaster,
+.rank-novice {
     font-weight: 700;
     background-clip: text;
     -webkit-background-clip: text;
@@ -1146,8 +1148,12 @@ body {
     background-image: linear-gradient(90deg, #60a5fa, #2563eb);
 }
 
+/* Combat Novice — brown */
+.rank-novice {
+    background-image: linear-gradient(90deg, #a0826d, #704214);
+}
+
 /* Others normal */
-.rank-novice,
 .rank-rookie {
     color: var(--text-secondary);
 }
@@ -1157,7 +1163,8 @@ body {
 .rank-master,
 .rank-ace,
 .rank-specialist,
-.rank-cadet {
+.rank-cadet,
+.rank-novice {
     font-weight: 700;
 
     display: inline-block;              /* CRITICAL */

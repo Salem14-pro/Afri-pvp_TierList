@@ -1,4 +1,4 @@
-// Mock Data Generator - Central TierList Style with Overall Rankings
+// Mock Data Generator - Central TierList Style with JSON Loading
 
 const GAMEMODES = [
     { id: 'gm_overall', name: 'Overall', isOverall: true },
@@ -27,6 +27,26 @@ const TIER_TEMPLATES = [
 
 const REGIONS = ['NA', 'EU', 'AS', 'SA', 'OCE'];
 
+// Storage for loaded player data
+let REAL_PLAYERS_DATA = [];
+
+// Load player data from JSON file
+async function loadPlayerData() {
+    try {
+        const response = await fetch('player.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        REAL_PLAYERS_DATA = await response.json();
+        console.log(`✅ Loaded ${REAL_PLAYERS_DATA.length} players from player.json`);
+        return true;
+    } catch (error) {
+        console.error('❌ Failed to load player.json:', error);
+        console.log('ℹ️  Using fallback dummy data instead');
+        return false;
+    }
+}
+
 // Generate tiers for all gamemodes (excluding overall)
 function generateTiers() {
     const tiers = [];
@@ -47,19 +67,64 @@ function generateTiers() {
     return tiers;
 }
 
-// Get random tier
+// Get random tier (for fallback dummy data)
 function getRandomTier() {
     return TIER_TEMPLATES[Math.floor(Math.random() * TIER_TEMPLATES.length)];
 }
 
-// Get random region
+// Get random region (for fallback dummy data)
 function getRandomRegion() {
     return REGIONS[Math.floor(Math.random() * REGIONS.length)];
 }
 
-// Generate unique players with rankings across all gamemodes
-function generatePlayers() {
-    const playerCount = 150; // Total unique players
+// Generate players from JSON data
+function generatePlayersFromJSON() {
+    if (REAL_PLAYERS_DATA.length === 0) {
+        console.warn('⚠️  No player data loaded from JSON');
+        return [];
+    }
+    
+    const tierPoints = {
+        'HT1': 60, 'LT1': 45, 'HT2': 30, 'LT2': 20,
+        'HT3': 15, 'LT3': 6, 'HT4': 4, 'LT4': 3,
+        'HT5': 2, 'LT5': 1
+    };
+    
+    const players = REAL_PLAYERS_DATA.map((playerData, index) => {
+        const gamemodeRankings = {};
+        let overallPoints = 0;
+        
+        // Map JSON tiers to gamemode rankings
+        Object.entries(playerData.tiers).forEach(([gamemode, tier]) => {
+            const gmId = `gm_${gamemode}`;
+            const tierId = tier.toLowerCase();
+            const points = (tier !== "-") ? (tierPoints[tier.toUpperCase()] || 0) : 0;
+            
+            gamemodeRankings[gmId] = {
+                tierId: tierId,
+                tierName: tier.toUpperCase(),
+                points: points
+            };
+            
+            overallPoints += points;
+        });
+        
+        return {
+            id: `player_${index + 1}`,
+            displayName: playerData.name,
+            region: playerData.region,
+            gamemodeRankings: gamemodeRankings,
+            overallPoints: overallPoints
+        };
+    });
+    
+    console.log(`✅ Generated ${players.length} player records`);
+    return players;
+}
+
+// Fallback: Generate dummy players (if JSON fails to load)
+function generateDummyPlayers() {
+    const playerCount = 150;
     const players = [];
     const nonOverallGamemodes = GAMEMODES.filter(gm => !gm.isOverall);
     
@@ -89,15 +154,39 @@ function generatePlayers() {
         players.push(player);
     }
     
+    console.log(`⚠️  Generated ${players.length} dummy players (fallback mode)`);
     return players;
 }
 
-// Create complete database
+// Create initial database with empty players
 const DATABASE = {
     gamemodes: GAMEMODES,
     tiers: generateTiers(),
-    players: generatePlayers()
+    players: [] // Will be populated after JSON loads
 };
+
+// Initialize data loading
+loadPlayerData().then((success) => {
+    if (success && REAL_PLAYERS_DATA.length > 0) {
+        DATABASE.players = generatePlayersFromJSON();
+    } else {
+        DATABASE.players = generateDummyPlayers();
+    }
+    
+    // Trigger app initialization/refresh if app is already loaded
+    if (window.app) {
+        console.log('🔄 Refreshing app with new data...');
+        window.app.allPlayersSorted = DATABASE.players
+            .slice()
+            .sort((a, b) => b.overallPoints - a.overallPoints);
+        window.app.renderRankings();
+    }
+    
+    console.log('=== Central TierList Database Ready ===');
+    console.log(`Gamemodes: ${GAMEMODES.length} (including Overall)`);
+    console.log(`Total players: ${DATABASE.players.length}`);
+    console.log('========================================');
+});
 
 // Helper functions for data access
 const DataAPI = {
@@ -131,38 +220,30 @@ const DataAPI = {
         });
     },
 
-searchPlayers: (gamemodeId, searchTerm) => {
-    let filteredPlayers = DATABASE.players;
+    searchPlayers: (gamemodeId, searchTerm) => {
+        let filteredPlayers = DATABASE.players;
 
-    if (searchTerm && searchTerm.trim() !== '') {
-        const term = searchTerm.toLowerCase().trim();
-        filteredPlayers = DATABASE.players.filter(player => 
-            player.displayName.toLowerCase().includes(term)
-        );
-    }
+        if (searchTerm && searchTerm.trim() !== '') {
+            const term = searchTerm.toLowerCase().trim();
+            filteredPlayers = DATABASE.players.filter(player => 
+                player.displayName.toLowerCase().includes(term)
+            );
+        }
 
-    if (gamemodeId === 'gm_overall') {
-        // Sort by pre-calculated overallPoints instead of recalculating
-        return filteredPlayers.sort((a, b) => b.overallPoints - a.overallPoints);
-    }
+        if (gamemodeId === 'gm_overall') {
+            // Sort by pre-calculated overallPoints instead of recalculating
+            return filteredPlayers.sort((a, b) => b.overallPoints - a.overallPoints);
+        }
 
-    // For specific gamemode, sort by tier
-    return [...filteredPlayers].sort((a, b) => {
-        const tierA = TIER_TEMPLATES.find(t => t.id === a.gamemodeRankings[gamemodeId].tierId);
-        const tierB = TIER_TEMPLATES.find(t => t.id === b.gamemodeRankings[gamemodeId].tierId);
-        return tierA.order - tierB.order;
-    });
-
-            },
+        // For specific gamemode, filter out unranked players and sort by tier
+        return [...filteredPlayers]
+            .filter(player => player.gamemodeRankings[gamemodeId].tierId !== "-")
+            .sort((a, b) => {
+                const tierA = TIER_TEMPLATES.find(t => t.id === a.gamemodeRankings[gamemodeId].tierId);
+                const tierB = TIER_TEMPLATES.find(t => t.id === b.gamemodeRankings[gamemodeId].tierId);
+                return tierA.order - tierB.order;
+            });
+    },
     
     getDatabase: () => DATABASE
 };
-
-// Log data statistics
-console.log('=== Central TierList Database Generated ===');
-console.log(`Gamemodes: ${GAMEMODES.length} (including Overall)`);
-console.log(`Non-Overall Gamemodes: ${GAMEMODES.filter(gm => !gm.isOverall).length}`);
-console.log(`Tiers per gamemode: ${TIER_TEMPLATES.length}`);
-console.log(`Total unique players: ${DATABASE.players.length}`);
-console.log(`Point values: HT1=60, LT1=45, HT2=30, LT2=20, HT3=15, LT3=6, HT4=4, LT4=3, HT5=2, LT5=1`);
-console.log('==========================================');

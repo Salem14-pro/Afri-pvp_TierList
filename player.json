@@ -1,0 +1,45 @@
+[
+    {
+        "name": "VexpierroMC",
+        "region": "NG",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "LT3",
+            "crystal": "-",
+            "uhc": "-",
+            "smp": "-"
+        }
+    },
+    {
+        "name": "AZ_SMOKEMC",
+        "region": "NG",
+        "tiers": {
+            "sword": "LT3",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "-",
+            "smp": "-"
+        }
+    },
+    {
+        "name": "Mr_S",
+        "region": "NG",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "LT3",
+            "smp": "-"
+        }
+    }
+   
+]
