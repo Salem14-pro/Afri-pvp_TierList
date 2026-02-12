@@ -264,9 +264,12 @@ getRankTitle(points) {
     `;
 }
 
-  renderTierPlayerRow(player) {
+renderTierPlayerRow(player) {
     return `
-        <div class="player-row ${player.level === "HT" ? "high-tier" : "low-tier"}">
+        <div 
+            class="player-row ${player.level === "HT" ? "high-tier" : "low-tier"}"
+            onclick="app.showPlayerStats('${player.id}')"
+        >
             <div class="tier-indicator"></div>
 
             <div class="player-content">
