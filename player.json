@@ -40,6 +40,19 @@
             "uhc": "LT3",
             "smp": "-"
         }
+    },
+    {
+        "name": "Nexus_is_here",
+        "region": "NG",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "HT5",
+            "crystal": "-",
+            "uhc": "-",
+            "smp": "-"
+        }
     }
-   
 ]
