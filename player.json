@@ -10,7 +10,8 @@
             "mace": "LT3",
             "crystal": "-",
             "uhc": "-",
-            "smp": "-"
+            "smp": "-",
+            "diasmp": "LT3"
         }
     },
     {
@@ -24,7 +25,8 @@
             "mace": "-",
             "crystal": "-",
             "uhc": "LT3",
-            "smp": "-"
+            "smp": "LT3",
+            "diasmp": "-"
         }
     },
     {
@@ -32,13 +34,14 @@
         "region": "NG",
         "tiers": {
             "sword": "-",
-            "pot": "-",
+            "pot": "LT3",
             "nethpot": "-",
             "axe": "-",
             "mace": "LT5",
             "crystal": "-",
             "uhc": "LT3",
-            "smp": "-"
+            "smp": "-",
+            "diasmp": "-"
         }
     },
     {
@@ -52,7 +55,8 @@
             "mace": "HT5",
             "crystal": "-",
             "uhc": "-",
-            "smp": "-"
+            "smp": "-",
+            "diasmp": "-"
         }
     }
 ]
