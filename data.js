@@ -10,7 +10,7 @@ const GAMEMODES = [
     { id: 'gm_crystal', name: 'Crystal' },
     { id: 'gm_uhc', name: 'UHC' },
     { id: 'gm_smp', name: 'SMP' },
-    { id: 'gm_diasmp', name: 'Diamond SMP' }
+    { id: 'gm_diasmp', name: 'Dia SMP' }
 ];
 
 const TIER_TEMPLATES = [
