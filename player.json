@@ -3,13 +3,13 @@
         "name": "VexpierroMC",
         "region": "NG",
         "tiers": {
-            "sword": "-",
+            "sword": "HT4",
             "pot": "-",
             "nethpot": "-",
             "axe": "-",
             "mace": "LT3",
             "crystal": "-",
-            "uhc": "-",
+            "uhc": "LT3",
             "smp": "-",
             "diasmp": "LT3"
         }
