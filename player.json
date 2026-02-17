@@ -20,7 +20,7 @@
         "tiers": {
             "sword": "LT3",
             "pot": "-",
-            "nethpot": "-",
+            "nethpot": "LT3",
             "axe": "-",
             "mace": "-",
             "crystal": "-",
