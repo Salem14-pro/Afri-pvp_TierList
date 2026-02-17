@@ -261,7 +261,7 @@ body {
 /* Tier Columns Layout */
 .tier-columns-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1px;
     background-color: var(--border-primary);
 }
@@ -898,6 +898,48 @@ body {
 }
 
 .player-row:hover .tier-badge {
+    opacity: 1;
+    right: 3px;
+}
+
+/* Waitlist Styles */
+.waitlist-column {
+    background-color: var(--bg-card);
+    border-left: 2px solid var(--border-secondary);
+}
+
+.waitlist-header {
+    background: linear-gradient(135deg, #1c1c24 0%, #16161d 100%);
+    border-bottom: 2px solid #ffcc00;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.waitlist-count {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffcc00;
+    background: rgba(255, 204, 0, 0.1);
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+.waitlist-tier .tier-indicator {
+    background: linear-gradient(180deg, #ffcc00 0%, #ff9500 100%);
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+}
+
+.waitlist-tier:hover .tier-indicator {
+    width: 100%;
+    opacity: 0.1;
+}
+
+.waitlist-tier .tier-badge {
+    color: #ffcc00;
+    font-size: 16px;
+}
+
+.waitlist-tier:hover .tier-badge {
     opacity: 1;
     right: 3px;
 }

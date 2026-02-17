@@ -236,12 +236,19 @@ const DataAPI = {
             return filteredPlayers.sort((a, b) => b.overallPoints - a.overallPoints);
         }
 
-        // For specific gamemode, filter out unranked players and sort by tier
+        // For specific gamemode, include all players (ranked and unranked)
         return [...filteredPlayers]
-            .filter(player => player.gamemodeRankings[gamemodeId].tierId !== "-")
             .sort((a, b) => {
-                const tierA = TIER_TEMPLATES.find(t => t.id === a.gamemodeRankings[gamemodeId].tierId);
-                const tierB = TIER_TEMPLATES.find(t => t.id === b.gamemodeRankings[gamemodeId].tierId);
+                const tierIdA = a.gamemodeRankings[gamemodeId]?.tierId || "-";
+                const tierIdB = b.gamemodeRankings[gamemodeId]?.tierId || "-";
+                
+                // Unranked players go to the end
+                if (tierIdA === "-" && tierIdB !== "-") return 1;
+                if (tierIdA !== "-" && tierIdB === "-") return -1;
+                if (tierIdA === "-" && tierIdB === "-") return 0;
+                
+                const tierA = TIER_TEMPLATES.find(t => t.id === tierIdA);
+                const tierB = TIER_TEMPLATES.find(t => t.id === tierIdB);
                 return tierA.order - tierB.order;
             });
     },
