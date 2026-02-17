@@ -3,7 +3,7 @@
 const GAMEMODES = [
     { id: 'gm_overall', name: 'Overall', isOverall: true },
     { id: 'gm_sword', name: 'Sword' },
-    { id: 'gm_pot', name: ' Pot ' },
+    { id: 'gm_pot', name: 'Dia Pot' },
     { id: 'gm_nethpot', name: 'Neth OP' },
     { id: 'gm_axe', name: 'Axe' },
     { id: 'gm_mace', name: 'Mace' },
