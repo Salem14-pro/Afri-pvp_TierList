@@ -182,14 +182,10 @@ getRankTitle(points) {
     }
 
     const tierMap = {};
-    const waitlistPlayers = [];
 
     players.forEach(player => {
         const ranking = player.gamemodeRankings[this.currentGamemode];
-        if (!ranking || ranking.tierId === "-") {
-            waitlistPlayers.push(player);
-            return;
-        }
+        if (!ranking || ranking.tierId === "-") return;
 
         // Extract tier number (1–5)
         const tierNumber = ranking.tierId.slice(-1);
@@ -210,7 +206,7 @@ getRankTitle(points) {
         .map(Number)
         .sort((a, b) => a - b);
 
-    if (sortedTiers.length === 0 && waitlistPlayers.length === 0) {
+    if (sortedTiers.length === 0) {
         container.innerHTML = this.renderEmptyState('No players ranked in this gamemode yet');
         return;
     }
@@ -220,7 +216,6 @@ getRankTitle(points) {
             ${sortedTiers.map(tier =>
                 this.renderTierColumn(tier, tierMap[tier])
             ).join('')}
-            ${waitlistPlayers.length > 0 ? this.renderWaitlistColumn(waitlistPlayers) : ''}
         </div>
     `;
 }
@@ -245,20 +240,6 @@ getRankTitle(points) {
     `;
 }
 
-renderWaitlistColumn(players) {
-    return `
-        <div class="tier-column waitlist-column">
-            <div class="tier-column-header waitlist-header">
-                <div class="tier-title">WAITLIST</div>
-                <div class="waitlist-count">${players.length}</div>
-            </div>
-            <div class="tier-column-body">
-                ${players.map(player => this.renderWaitlistPlayerRow(player)).join('')}
-            </div>
-        </div>
-    `;
-}
-
 renderTierPlayerRow(player) {
     return `
         <div 
@@ -275,27 +256,6 @@ renderTierPlayerRow(player) {
 
             <div class="tier-badge">
                 ${player.level}
-            </div>
-        </div>
-    `;
-}
-
-renderWaitlistPlayerRow(player) {
-    return `
-        <div 
-            class="player-row waitlist-tier"
-            onclick="app.showPlayerStats('${player.id}')"
-        >
-            <div class="tier-indicator waitlist-indicator"></div>
-
-            <div class="player-content">
-                <span class="player-name">
-                    ${this.escapeHtml(player.displayName)}
-                </span>
-            </div>
-
-            <div class="tier-badge waitlist-badge">
-                —
             </div>
         </div>
     `;
