@@ -29,6 +29,21 @@
             "diasmp": "-"
         }
     },
+    {
+        "name": "amwithcoffee",
+        "region": "NG",
+        "tiers": {
+            "sword": "-",
+            "pot": "LT3",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "LT4",
+            "smp": "-",
+            "diasmp": "-"
+        }
+    },
      {
         "name": "Leoboltz_",
         "region": "NG",
