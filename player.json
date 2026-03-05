@@ -82,11 +82,11 @@
             "pot": "LT3",
             "nethpot": "-",
             "axe": "-",
-            "mace": "LT5",
+            "mace": "HT5",
             "crystal": "-",
             "uhc": "LT3",
             "smp": "-",
-            "diasmp": "-"
+            "diasmp": "LT3"
         }
     },
     {
