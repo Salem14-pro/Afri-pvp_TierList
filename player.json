@@ -89,6 +89,21 @@
             "diasmp": "LT3"
         }
     },
+     {
+        "name": "Panther_playsmc",
+        "region": "NG",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "HT4",
+            "smp": "-",
+            "diasmp": "-"
+        }
+    },
     {
         "name": "Nexusking",
         "region": "NG",
