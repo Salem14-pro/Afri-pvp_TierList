@@ -189,7 +189,6 @@ loadPlayerData().then((success) => {
     console.log('========================================');
 });
 
-// Helper functions for data access
 const DataAPI = {
     getGamemodes: () => DATABASE.gamemodes,
     
@@ -246,5 +245,16 @@ const DataAPI = {
             });
     },
     
-    getDatabase: () => DATABASE
+    getDatabase: () => DATABASE,
+
+    // NEW: Automated Skin Integration using Crafty API (Modern 2026 standard)
+    getSkinUrl: (username) => {
+        // Full body for overall page
+        return `https://render.crafty.gg/3d/full/${encodeURIComponent(username)}`;
+    },
+    
+    getBustUrl: (username) => {
+        // Bust portrait (head-to-chest) for profile modal
+        return `https://render.crafty.gg/3d/bust/${encodeURIComponent(username)}`;
+    }
 };

@@ -15,7 +15,7 @@
         }
     },
     {
-        "name": "AZ_SMOKEMC",
+        "name": "AZSMOKEMC",
         "region": "NG",
         "tiers": {
             "sword": "LT3",
@@ -75,7 +75,7 @@
         }
     },
     {
-        "name": "Mr_S",
+        "name": "FlowTuck",
         "region": "NG",
         "tiers": {
             "sword": "LT4",
@@ -105,7 +105,7 @@
         }
     },
     {
-        "name": "Nexusking",
+        "name": "Nexus_king",
         "region": "NG",
         "tiers": {
             "sword": "LT4",

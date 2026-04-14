@@ -90,6 +90,27 @@ renderRankings() {
     } else {
         this.renderGamemodeWithTiers(container);
     }
+
+    // New phase: Update skins after content is in DOM
+    this.updateAllSkins();
+}
+
+async updateAllSkins() {
+    const rows = document.querySelectorAll('[data-player-name]');
+    
+    for (const row of rows) {
+        const playerName = row.getAttribute('data-player-name');
+        const bgElement = row.querySelector('.overall-skin-bg');
+        
+        if (bgElement && !bgElement.style.backgroundImage) {
+            const skinUrl = DataAPI.getSkinUrl(playerName);
+            bgElement.style.backgroundImage = `url('${skinUrl}')`;
+            
+            // Crafty usually loads fast, but we'll add the loaded class immediately 
+            // since we don't have a lookup promise anymore
+            bgElement.classList.add('loaded');
+        }
+    }
 }
     
    renderOverallRankings(container, players) {
@@ -131,8 +152,11 @@ renderRankings() {
     const rankTitle = this.getRankTitle(player.overallPoints);
 
     return `
-      <div class="overall-card ${this.getMedalClass(rank)}"
-     onclick="app.showPlayerStats('${player.id}')">
+  <div class="overall-card ${this.getMedalClass(rank)}"
+     onclick="app.showPlayerStats('${player.id}')"
+     data-player-name="${this.escapeHtml(player.displayName)}">
+            
+            <div class="overall-skin-bg"></div>
 
             <div class="overall-rank">#${rank}</div>
 
@@ -245,6 +269,7 @@ renderTierPlayerRow(player) {
         <div 
             class="player-row ${player.level === "HT" ? "high-tier" : "low-tier"}"
             onclick="app.showPlayerStats('${player.id}')"
+            data-player-name="${this.escapeHtml(player.displayName)}"
         >
             <div class="tier-indicator"></div>
 
@@ -309,6 +334,7 @@ CentralTierListApp.prototype.showPlayerStats = function(playerId) {
     if (!player) return;
 
     const rank = this.allPlayersSorted.findIndex(p => p.id === player.id) + 1;
+    const skinUrl = DataAPI.getBustUrl(player.displayName);
 
     const modal = document.createElement('div');
     modal.classList.add('player-modal');
@@ -320,14 +346,18 @@ CentralTierListApp.prototype.showPlayerStats = function(playerId) {
                 onclick="this.parentElement.parentElement.remove()">✕</button>
 
             <div class="profile-header">
-                <div class="profile-name">
-                    ${this.escapeHtml(player.displayName)}
+                <div class="profile-avatar">
+                   <img src="${skinUrl}" class="profile-avatar-img">
                 </div>
-              ${(() => {
-    const rt = this.getRankTitle(player.overallPoints);
-    return `<div class="profile-rank ${rt.class}">${rt.title}</div>`;
-})()}
-
+                <div class="profile-titles">
+                    <div class="profile-name">
+                        ${this.escapeHtml(player.displayName)}
+                    </div>
+                    ${(() => {
+                        const rt = this.getRankTitle(player.overallPoints);
+                        return `<div class="profile-rank ${rt.class}">${rt.title}</div>`;
+                    })()}
+                </div>
             </div>
 
             <div class="profile-stats">
