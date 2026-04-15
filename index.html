@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Afri-pvp TierList - Minecraft PvP Rankings</title>
+    <meta name="description" content="Afri-PvP Tierlist — The definitive Minecraft PvP rankings for African players. View competitive tier placements across Sword, Pot, Crystal, UHC, and more.">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Ambient Particle Canvas -->
+    <canvas id="ambientParticles" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <!-- Cursor Glow Tracker -->
+    <div id="cursorGlow" style="position:fixed;width:350px;height:350px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(99,102,241,0.06) 0%,rgba(56,189,248,0.03) 40%,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;"></div>
     <!-- Header -->
     <header class="header">
         <div class="header-container">
@@ -18,10 +23,10 @@
                 <span class="logo-text">Afri-pvp Tierlist</span>
             </div>
             <nav class="nav">
-                <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link active">Rankings</a>
-                <a href="#" class="nav-link">Testers</a>
-                <a href="#" class="nav-link">Guide</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html" class="nav-link active">Rankings</a>
+                <a href="testers.html" class="nav-link">Testers</a>
+                <a href="guide.html" class="nav-link">Guide</a>
             </nav>
             <a href="#" class="discord-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -82,5 +87,165 @@
 
     <script src="data.js"></script>
     <script src="script.js"></script>
+    <script>
+    // ============================================================
+    // LIQUID GLASS EFFECTS — Ambient Particles + Cursor Glow + Tilt
+    // ============================================================
+    (function() {
+        'use strict';
+
+        // --- AMBIENT FLOATING PARTICLES ---
+        const canvas = document.getElementById('ambientParticles');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const PARTICLE_COUNT = 35;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.2;
+                    this.opacity = Math.random() * 0.25 + 0.05;
+                    this.hue = Math.random() > 0.5 ? 240 : 200; // blue-purple range
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = Math.random() * 0.02 + 0.005;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < -20 || this.x > canvas.width + 20 ||
+                        this.y < -20 || this.y > canvas.height + 20) {
+                        this.reset();
+                    }
+                }
+                draw() {
+                    const pulsedOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 70%, 75%, ${pulsedOpacity})`;
+                    ctx.fill();
+                    // Soft glow
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 70%, 75%, ${pulsedOpacity * 0.15})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- CURSOR GLOW TRACKER ---
+        const glow = document.getElementById('cursorGlow');
+        if (glow) {
+            let mouseX = 0, mouseY = 0;
+            let glowX = 0, glowY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                glow.style.opacity = '1';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                glow.style.opacity = '0';
+            });
+
+            function updateGlow() {
+                glowX += (mouseX - glowX) * 0.08;
+                glowY += (mouseY - glowY) * 0.08;
+                glow.style.left = glowX + 'px';
+                glow.style.top = glowY + 'px';
+                requestAnimationFrame(updateGlow);
+            }
+            updateGlow();
+        }
+
+        // --- INTERACTIVE CARD TILT ---
+        function addTiltEffect(selector) {
+            document.addEventListener('mousemove', (e) => {
+                const cards = document.querySelectorAll(selector);
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const distX = e.clientX - centerX;
+                    const distY = e.clientY - centerY;
+                    const dist = Math.sqrt(distX * distX + distY * distY);
+
+                    if (dist < 350) {
+                        const intensity = 1 - (dist / 350);
+                        const rotateY = (distX / rect.width) * 3 * intensity;
+                        const rotateX = -(distY / rect.height) * 3 * intensity;
+                        card.style.transform =
+                            `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-${2 * intensity}px)`;
+                    }
+                });
+            });
+
+            document.addEventListener('mouseleave', () => {
+                const cards = document.querySelectorAll(selector);
+                cards.forEach(card => {
+                    card.style.transform = '';
+                });
+            });
+        }
+
+        // Apply tilt to overall cards and tier columns
+        addTiltEffect('.overall-card');
+        addTiltEffect('.tier-column');
+        addTiltEffect('.profile-gm-card');
+
+        // --- STAGGER ENTRANCE ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${i * 0.05}s`;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe dynamically added cards (use MutationObserver)
+        const rankingsContainer = document.getElementById('rankingsContainer');
+        if (rankingsContainer) {
+            const mutationObs = new MutationObserver(() => {
+                const cards = rankingsContainer.querySelectorAll('.overall-card, .tier-column, .ranking-row');
+                cards.forEach((card, i) => {
+                    card.style.animationDelay = `${i * 0.04}s`;
+                });
+            });
+            mutationObs.observe(rankingsContainer, { childList: true, subtree: true });
+        }
+
+    })();
+    </script>
 </body>
 </html>

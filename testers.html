@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testers - Afri-pvp TierList</title>
+    <meta name="description" content="Meet the official Afri-PvP Tierlist testers. View their testing modes, Discord profiles, and real-time online status.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Ambient Particle Canvas -->
+    <canvas id="ambientParticles" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <!-- Cursor Glow Tracker -->
+    <div id="cursorGlow" style="position:fixed;width:350px;height:350px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(99,102,241,0.06) 0%,rgba(56,189,248,0.03) 40%,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo" style="text-decoration:none;">
+                <img src="icons/Afri-pvp Tierlist.svg" alt="Afri-pvp Logo" class="logo-icon" width="28" height="28">
+                <span class="logo-text">Afri-pvp Tierlist</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html" class="nav-link">Rankings</a>
+                <a href="testers.html" class="nav-link active">Testers</a>
+                <a href="guide.html" class="nav-link">Guide</a>
+            </nav>
+            <a href="#" class="discord-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
+                </svg>
+                Discord
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Our Testers</h1>
+                <p class="page-subtitle">The official testers who evaluate and rank players across all gamemodes</p>
+            </div>
+
+            <!-- Status Legend -->
+            <div class="testers-legend">
+                <div class="legend-item">
+                    <span class="status-dot status-online"></span>
+                    <span>Online</span>
+                </div>
+                <div class="legend-item">
+                    <span class="status-dot status-idle"></span>
+                    <span>Idle</span>
+                </div>
+                <div class="legend-item">
+                    <span class="status-dot status-dnd"></span>
+                    <span>Do Not Disturb</span>
+                </div>
+                <div class="legend-item">
+                    <span class="status-dot status-offline"></span>
+                    <span>Offline</span>
+                </div>
+            </div>
+
+            <!-- Testers Grid -->
+            <div class="testers-grid" id="testersGrid">
+                <!-- Cards will be injected by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="icons/Afri-pvp Tierlist.svg" alt="Afri-pvp Logo" width="24" height="24">
+                <span>Afri-PvP Tierlist</span>
+            </div>
+            <p class="footer-text">© 2026 Afri-PvP Tierlist. By Mr.S</p>
+        </div>
+    </footer>
+
+    <script>
+    // ============================================================
+    // TESTERS PAGE — Data, Rendering, & Discord Widget Status
+    // ============================================================
+    (function() {
+        'use strict';
+
+        // ---- CONFIG ----
+        const DISCORD_SERVER_ID = '1472186720043929793';
+        const WIDGET_API = `https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`;
+
+        // ---- TESTER DATA ----
+        // discordName should match their Discord display name in the server
+        const TESTERS = [
+            {
+                name: 'VexpierroMC',
+                modes: ['mace', 'diasmp'],
+                discordName: 'Vexpierro',
+                discordId: '1374866776017338481'
+            },
+            {
+                name: 'FlowTuck',
+                modes: ['uhc', 'pot'],
+                discordName: '𝔐𝔯.𝔖',
+                discordId: '1403521983895044096'
+            },
+            {
+                name: 'leoboltzx',
+                modes: ['axe'],
+                discordName: 'LËØ⚡',
+                discordId: '827639584401391667'
+            },
+            {
+                name: 'AZSMOKEMC',
+                modes: ['smp', 'sword', 'nethpot'],
+                discordName: 'AZSMOKE',
+                discordId: '1404458864312582144'
+            }
+        ];
+
+        // ---- GAMEMODE DISPLAY MAP ----
+        const MODE_LABELS = {
+            sword: 'Sword',
+            pot: 'Dia Pot',
+            nethpot: 'Neth OP',
+            axe: 'Axe',
+            mace: 'Mace',
+            crystal: 'Crystal',
+            uhc: 'UHC',
+            smp: 'SMP',
+            diasmp: 'Dia SMP'
+        };
+
+        // ---- FETCH ONLINE MEMBERS VIA DISCORD WIDGET API ----
+        let serverInviteUrl = '#';
+
+        async function fetchWidgetData() {
+            try {
+                const res = await fetch(WIDGET_API);
+                if (!res.ok) return {};
+                const data = await res.json();
+
+                // Store invite link
+                if (data.instant_invite) {
+                    serverInviteUrl = data.instant_invite;
+                }
+
+                // Build a map: lowercase username -> status
+                const statusMap = {};
+                if (data.members) {
+                    data.members.forEach(member => {
+                        statusMap[member.username.toLowerCase()] = member.status; // online | idle | dnd
+                    });
+                }
+                return statusMap;
+            } catch (e) {
+                console.warn('⚠️ Could not fetch Discord widget:', e);
+                return {};
+            }
+        }
+
+        // ---- STATUS COLOR/LABEL MAP ----
+        function getStatusInfo(status) {
+            switch (status) {
+                case 'online': return { label: 'Online', class: 'status-online' };
+                case 'idle': return { label: 'Idle', class: 'status-idle' };
+                case 'dnd': return { label: 'Do Not Disturb', class: 'status-dnd' };
+                default: return { label: 'Offline', class: 'status-offline' };
+            }
+        }
+
+        // ---- RENDER TESTER CARDS ----
+        function renderTesters() {
+            const grid = document.getElementById('testersGrid');
+            if (!grid) return;
+
+            grid.innerHTML = TESTERS.map((tester, index) => {
+                const skinUrl = `https://render.crafty.gg/3d/bust/${encodeURIComponent(tester.name)}`;
+                const statusInfo = getStatusInfo(null); // default offline until fetched
+
+                const modesHTML = tester.modes.map(mode => `
+                    <div class="tester-mode-badge">
+                        <img src="icons/gm_${mode}.svg" alt="${MODE_LABELS[mode] || mode}" class="tester-mode-icon">
+                        <span>${MODE_LABELS[mode] || mode}</span>
+                    </div>
+                `).join('');
+
+                return `
+                <div class="tester-card" data-tester-index="${index}" style="animation-delay: ${index * 0.12}s">
+                    <!-- Glass shimmer -->
+                    <div class="tester-card-shimmer"></div>
+
+                    <!-- Top section: Avatar + Status -->
+                    <div class="tester-card-top">
+                        <div class="tester-avatar-wrap">
+                            <img src="${skinUrl}" alt="${tester.name}" class="tester-avatar-img" loading="lazy">
+                            <div class="tester-status-ring">
+                                <span class="status-dot ${statusInfo.class}" id="status-dot-${index}" title="${statusInfo.label}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info section -->
+                    <div class="tester-card-info">
+                        <h2 class="tester-name">${tester.name}</h2>
+                        <div class="tester-status-label">
+                            <span class="status-dot-small ${statusInfo.class}" id="status-dot-sm-${index}"></span>
+                            <span class="tester-status-text" id="status-text-${index}">${statusInfo.label}</span>
+                        </div>
+                    </div>
+
+                    <!-- Modes section -->
+                    <div class="tester-modes-section">
+                        <div class="tester-modes-title">Testing Modes</div>
+                        <div class="tester-modes-list">
+                            ${modesHTML}
+                        </div>
+                    </div>
+
+                    <!-- Discord link -->
+                    <a href="https://discordapp.com/users/${tester.discordId}" class="tester-discord-link" id="discord-link-${index}" title="View ${tester.name} on Discord" target="_blank" rel="noopener">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
+                        </svg>
+                        <span>Discord Profile</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tester-link-arrow">
+                            <path d="M7 17l9.2-9.2M17 17V7H7"/>
+                        </svg>
+                    </a>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // ---- UPDATE STATUS FROM WIDGET DATA ----
+        function applyStatuses(statusMap) {
+            TESTERS.forEach((tester, i) => {
+                // Try matching by discordName (case-insensitive)
+                const key = tester.discordName.toLowerCase();
+                const status = statusMap[key] || null;
+                const info = getStatusInfo(status);
+
+                const dot = document.getElementById(`status-dot-${i}`);
+                const dotSm = document.getElementById(`status-dot-sm-${i}`);
+                const text = document.getElementById(`status-text-${i}`);
+
+                if (dot) { dot.className = `status-dot ${info.class}`; dot.title = info.label; }
+                if (dotSm) { dotSm.className = `status-dot-small ${info.class}`; }
+                if (text) { text.textContent = info.label; }
+            });
+        }
+
+        // ---- POLL STATUS ----
+        async function pollStatus() {
+            const statusMap = await fetchWidgetData();
+            applyStatuses(statusMap);
+
+            // Also update the header Discord button
+            const discordBtn = document.querySelector('.discord-btn');
+            if (discordBtn && serverInviteUrl !== '#') {
+                discordBtn.href = serverInviteUrl;
+                discordBtn.target = '_blank';
+                discordBtn.rel = 'noopener';
+            }
+        }
+
+        // ---- INIT ----
+        renderTesters();
+        pollStatus();
+        // Refresh status every 30 seconds
+        setInterval(pollStatus, 30000);
+
+    })();
+
+    // ============================================================
+    // LIQUID GLASS EFFECTS — Ambient Particles + Cursor Glow + Tilt
+    // ============================================================
+    (function() {
+        'use strict';
+
+        // --- AMBIENT FLOATING PARTICLES ---
+        const canvas = document.getElementById('ambientParticles');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const PARTICLE_COUNT = 35;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.2;
+                    this.opacity = Math.random() * 0.25 + 0.05;
+                    this.hue = Math.random() > 0.5 ? 240 : 200;
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = Math.random() * 0.02 + 0.005;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < -20 || this.x > canvas.width + 20 ||
+                        this.y < -20 || this.y > canvas.height + 20) this.reset();
+                }
+                draw() {
+                    const op = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 70%, 75%, ${op})`; ctx.fill();
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 70%, 75%, ${op * 0.15})`; ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- CURSOR GLOW TRACKER ---
+        const glow = document.getElementById('cursorGlow');
+        if (glow) {
+            let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; glow.style.opacity = '1'; });
+            document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+            function updateGlow() {
+                glowX += (mouseX - glowX) * 0.08;
+                glowY += (mouseY - glowY) * 0.08;
+                glow.style.left = glowX + 'px';
+                glow.style.top = glowY + 'px';
+                requestAnimationFrame(updateGlow);
+            }
+            updateGlow();
+        }
+
+        // --- INTERACTIVE CARD TILT ---
+        function addTiltEffect(selector) {
+            document.addEventListener('mousemove', (e) => {
+                document.querySelectorAll(selector).forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const dx = e.clientX - (rect.left + rect.width / 2);
+                    const dy = e.clientY - (rect.top + rect.height / 2);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 400) {
+                        const i = 1 - (dist / 400);
+                        card.style.transform = `perspective(800px) rotateX(${-(dy / rect.height) * 4 * i}deg) rotateY(${(dx / rect.width) * 4 * i}deg) translateY(-${3 * i}px)`;
+                    }
+                });
+            });
+            document.addEventListener('mouseleave', () => {
+                document.querySelectorAll(selector).forEach(c => { c.style.transform = ''; });
+            });
+        }
+
+        addTiltEffect('.tester-card');
+    })();
+    </script>
+</body>
+</html>

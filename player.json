@@ -19,7 +19,7 @@
         "region": "NG",
         "tiers": {
             "sword": "LT3",
-            "pot": "-",
+            "pot": "LT3",
             "nethpot": "LT3",
             "axe": "-",
             "mace": "-",
@@ -60,7 +60,7 @@
         }
     },
      {
-        "name": "Leoboltz_",
+        "name": "leoboltzx",
         "region": "NG",
         "tiers": {
             "sword": "-",
@@ -80,7 +80,7 @@
         "tiers": {
             "sword": "LT4",
             "pot": "LT3",
-            "nethpot": "-",
+            "nethpot": "HT5",
             "axe": "-",
             "mace": "HT5",
             "crystal": "-",

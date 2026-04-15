@@ -31,19 +31,32 @@ const REGIONS = ['NA', 'EU', 'AS', 'SA', 'OCE'];
 // Storage for loaded player data
 let REAL_PLAYERS_DATA = [];
 
-// Load player data from JSON file
+// Load player data from API (Live from MongoDB)
 async function loadPlayerData() {
     try {
-        const response = await fetch('player.json');
+        const response = await fetch('/api/players');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         REAL_PLAYERS_DATA = await response.json();
-        console.log(`✅ Loaded ${REAL_PLAYERS_DATA.length} players from player.json`);
+        console.log(`✅ Loaded ${REAL_PLAYERS_DATA.length} players live from database`);
         return true;
     } catch (error) {
-        console.error('❌ Failed to load player.json:', error);
-        console.log('ℹ️  Using fallback dummy data instead');
+        console.error('❌ Failed to load live player data:', error);
+        
+        // Fallback to local player.json for development if API fails
+        try {
+            const fallbackResponse = await fetch('player.json');
+            if (fallbackResponse.ok) {
+                REAL_PLAYERS_DATA = await fallbackResponse.json();
+                console.log('ℹ️  Using local player.json as fallback');
+                return true;
+            }
+        } catch (fError) {
+            console.error('❌ Fallback failed:', fError);
+        }
+        
+        console.log('ℹ️  Using generated dummy data instead');
         return false;
     }
 }

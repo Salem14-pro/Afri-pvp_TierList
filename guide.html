@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide - Afri-pvp TierList</title>
+    <meta name="description" content="Comprehensive guide to Afri-PvP testing procedures, queue systems, and detailed gamemode specifications.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Ambient Particle Canvas -->
+    <canvas id="ambientParticles" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <!-- Cursor Glow Tracker -->
+    <div id="cursorGlow" style="position:fixed;width:350px;height:350px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(99,102,241,0.06) 0%,rgba(56,189,248,0.03) 40%,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo" style="text-decoration:none;">
+                <img src="icons/Afri-pvp Tierlist.svg" alt="Afri-pvp Logo" class="logo-icon" width="28" height="28">
+                <span class="logo-text">Afri-pvp Tierlist</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html" class="nav-link">Rankings</a>
+                <a href="testers.html" class="nav-link">Testers</a>
+                <a href="guide.html" class="nav-link active">Guide</a>
+            </nav>
+            <a href="#" class="discord-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
+                </svg>
+                Discord
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header" style="animation: controlsFade 0.8s var(--ease-fluid) 0.1s both;">
+                <h1 class="page-title">Complete Guide</h1>
+                <p class="page-subtitle">Your comprehensive resource for understanding testing procedures, queue systems, and detailed gamemode specifications.</p>
+            </div>
+
+            <!-- Quick Jumps -->
+            <div class="quick-jump-wrap">
+                <a href="#sword" class="quick-jump-badge"><img src="icons/gm_sword.svg" class="quick-jump-icon" alt=""> Sword PvP</a>
+                <a href="#potion" class="quick-jump-badge"><img src="icons/gm_pot.svg" class="quick-jump-icon" alt=""> Potion PvP</a>
+                <a href="#nethpot" class="quick-jump-badge"><img src="icons/gm_nethpot.svg" class="quick-jump-icon" alt=""> Neth Pot</a>
+                <a href="#crystal" class="quick-jump-badge"><img src="icons/gm_crystal.svg" class="quick-jump-icon" alt=""> Crystal</a>
+                <a href="#uhc" class="quick-jump-badge"><img src="icons/gm_uhc.svg" class="quick-jump-icon" alt=""> UHC</a>
+                <a href="#smp" class="quick-jump-badge"><img src="icons/gm_smp.svg" class="quick-jump-icon" alt=""> SMP</a>
+                <a href="#axe" class="quick-jump-badge"><img src="icons/gm_axe.svg" class="quick-jump-icon" alt=""> Axe PvP</a>
+                <a href="#mace" class="quick-jump-badge"><img src="icons/gm_mace.svg" class="quick-jump-icon" alt=""> Mace PvP</a>
+            </div>
+
+            <!-- Tutorials Section -->
+            <h2 class="category-title" id="tutorials-head">Tutorials</h2>
+            <div class="guide-intro-grid">
+                <!-- Getting Started -->
+                <div class="guide-card" style="animation-delay: 0.15s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <h2 class="guide-section-title">Getting Started</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <ol class="guide-ordered-list">
+                            <li>Turn on "Show All Channels" by clicking <strong>1.21+] Central Tierlist</strong> in the top left corner of the server</li>
+                            <li>Scroll down and go to <strong>request test</strong></li>
+                            <li>Click <strong>Register / Update Profile</strong></li>
+                            <li>Choose your gamemode to be added to the waitlist</li>
+                            <li>Wait patiently until a tester is available and opens queue</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Queue System -->
+                <div class="guide-card" style="animation-delay: 0.2s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <h2 class="guide-section-title">Queue System</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <ul class="guide-list">
+                            <li>Being in the waitlist means you will be tested at some point, not immediately. Please be patient.</li>
+                            <li>Join the queue when a tester pings with a button; it is for players ready to log on now.</li>
+                            <li>If no testers are available, there is no open queue message.</li>
+                            <li>Queues close when no testers remain active. Your position is not saved.</li>
+                            <li>Press leave if you no longer want to be tested.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Gamemodes Section -->
+            <h2 class="category-title" id="gamemodes-head">Gamemodes</h2>
+            <div class="guide-gm-grid">
+                
+                <!-- Sword PvP -->
+                <div class="guide-card" id="sword" style="animation-delay: 0.25s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_sword.svg" alt="Sword" class="guide-gm-icon">
+                        <h2 class="guide-section-title">Sword PvP</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT10</li>
+                            <li>Minimum score for LT3: 7-10 against LT3 Tester</li>
+                            <li>Minimum score for HT3 Eval: 10-6 against LT3 Tester</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">High Tests (HT3 and above)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT10</li>
+                            <li>Beat two LT3 10-6 or more</li>
+                            <li>Minimum score for HT3: 7-10 against HT3</li>
+                            <li>T2+ Fights will be based on True Score</li>
+                        </ul>
+
+                        <h3 class="guide-subsection">Retirement Requirements (LT2+)</h3>
+                        <ul class="guide-list">
+                            <li>Hold the rank for at least 30D (Request to retire in a ticket)</li>
+                        </ul>
+
+                        <h3 class="guide-subsection">Sword Kit</h3>
+                        <ul class="guide-list">
+                            <li>4 Armor Pieces (Protection III)</li>
+                            <li>Diamond Sword (Sweeping Edge III)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Potion PvP -->
+                <div class="guide-card" id="potion" style="animation-delay: 0.3s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_pot.svg" alt="Potion" class="guide-gm-icon">
+                        <h2 class="guide-section-title">Potion PvP</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT5</li>
+                            <li>Minimum score for LT3: 3-5 against LT3 Tester</li>
+                            <li>Minimum score for HT3 Eval: 10-6 against 2 LT3 Testers</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">High Tests (HT3 and above)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT10</li>
+                            <li>Minimum score for HT3: 8-10 against HT3</li>
+                            <li>T2+ Fights will be FT15 and based on True Score</li>
+                        </ul>
+
+                        <h3 class="guide-subsection">Retirement Requirements (LT2+)</h3>
+                        <ul class="guide-list">
+                            <li>Hold the rank for at least 30D (Request to retire in a ticket)</li>
+                        </ul>
+
+                        <h3 class="guide-subsection">Potion Kit</h3>
+                        <ul class="guide-list">
+                            <li>4 Armor Pieces (Protection IV)</li>
+                            <li>Sharpness V Diamond Sword</li>
+                            <li>Power V, Punch II Bow</li>
+                            <li>24 Arrows</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Netherite Potion -->
+                <div class="guide-card" id="nethpot" style="animation-delay: 0.35s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_nethpot.svg" alt="Netherite Potion" class="guide-gm-icon">
+                        <h2 class="guide-section-title">Netherite Potion</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT4</li>
+                            <li>Minimum score for LT3: 3-4 against LT3 Tester</li>
+                            <li>Minimum score for HT3 Eval: 4-2 against LT3 Tester</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">High Tests (HT3 and above)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT4</li>
+                            <li>Minimum score for HT3: 3-4 against HT3 Tester</li>
+                            <li>Minimum score for LT2: 3-4 against LT2</li>
+                            <li>Minimum score for HT2: 3-4 against HT2</li>
+                            <li>Minimum score for LT1: 4-2 against all HT2s/LT2s</li>
+                        </ul>
+
+                        <h3 class="guide-subsection">Nethpot Kit</h3>
+                        <ul class="guide-list">
+                            <li>4 Armor Pieces (Protection IV, Mending, Unbreaking III)</li>
+                            <li>Sharpness V Netherite Sword</li>
+                            <li>3 Totem of Undying</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Crystal PvP -->
+                <div class="guide-card" id="crystal" style="animation-delay: 0.4s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_crystal.svg" alt="Crystal" class="guide-gm-icon">
+                        <h2 class="guide-section-title">Crystal PvP</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Kit (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>14 Totems of Undying</li>
+                            <li>No Weakness Arrows</li>
+                            <li>(First to 3 Wins)</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">HT3+ Kit</h3>
+                        <ul class="guide-list">
+                            <li>8 Totems of Undying</li>
+                            <li>(First to 3 for HT3, 4 for T2+)</li>
+                        </ul>
+
+                        <h3 class="guide-subsection">Universal Kit Rules + Limits</h3>
+                        <ul class="guide-list">
+                            <li>64 Respawn Anchors</li>
+                            <li>No Enchanted Golden Apples</li>
+                            <li>1 Elytra (No Unbreaking/Mending)</li>
+                            <li>4 Netherite Armor Pieces</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- UHC -->
+                <div class="guide-card" id="uhc" style="animation-delay: 0.45s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_uhc.svg" alt="UHC" class="guide-gm-icon">
+                        <h2 class="guide-section-title">UHC</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT10</li>
+                            <li>Minimum score for LT3: 7-10 against LT3 Tester</li>
+                            <li>Minimum score for HT3 Eval: 10-6 against LT3 Tester</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">UHC Kit</h3>
+                        <ul class="guide-list">
+                            <li>Protection III Diamond Armor</li>
+                            <li>2 Shields</li>
+                            <li>Diamond Sword - Sharpness IV</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SMP -->
+                <div class="guide-card" id="smp" style="animation-delay: 0.5s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_smp.svg" alt="SMP" class="guide-gm-icon">
+                        <h2 class="guide-section-title">SMP PvP</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT3</li>
+                            <li>Minimum score for LT3: 2-3 against LT3 Tester</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">SMP Kit</h3>
+                        <ul class="guide-list">
+                            <li>4 Netherite Armor Pieces - Mending, Unbreaking III, Protection IV</li>
+                            <li>Netherite Sword - Sharpness V, Fire Aspect II, Sweeping Edge III</li>
+                            <li>Netherite Axe - Sharpness V, Efficiency V</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Axe PvP -->
+                <div class="guide-card" id="axe" style="animation-delay: 0.55s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_axe.svg" alt="Axe" class="guide-gm-icon">
+                        <h2 class="guide-section-title">Axe PvP</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT10</li>
+                            <li>Minimum score for LT3: 8-10 against LT3 Tester</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">Axe Kit</h3>
+                        <ul class="guide-list">
+                            <li>4 Diamond Armor Pieces - Unenchanted</li>
+                            <li>Diamond Sword - Unenchanted</li>
+                            <li>Diamond Axe - Unenchanted</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mace PvP -->
+                <div class="guide-card" id="mace" style="animation-delay: 0.6s;">
+                    <div class="guide-card-shimmer"></div>
+                    <div class="guide-card-header">
+                        <img src="icons/gm_mace.svg" alt="Mace" class="guide-gm-icon">
+                        <h2 class="guide-section-title">Mace PvP</h2>
+                    </div>
+                    <div class="guide-card-body">
+                        <h3 class="guide-subsection">Evaluation Tests (LT3 and below)</h3>
+                        <ul class="guide-list">
+                            <li>Fights will be FT3</li>
+                            <li>Minimum score for LT3: 2-3 against LT3 Tester</li>
+                        </ul>
+                        
+                        <h3 class="guide-subsection">Mace Kit</h3>
+                        <ul class="guide-list">
+                            <li>Breach IV Mace, Density V Mace</li>
+                            <li>Sharpness V & Unbreaking III Sword and Axe</li>
+                            <li>Unbreaking III Shield</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="icons/Afri-pvp Tierlist.svg" alt="Afri-pvp Logo" width="24" height="24">
+                <span>Afri-PvP Tierlist</span>
+            </div>
+            <p class="footer-text">© 2026 Afri-PvP Tierlist. By Mr.S</p>
+        </div>
+    </footer>
+
+    <script>
+    // ============================================================
+    // LIQUID GLASS EFFECTS — Ambient Particles + Cursor Glow + Tilt
+    // ============================================================
+    (function() {
+        'use strict';
+
+        // --- AMBIENT FLOATING PARTICLES ---
+        const canvas = document.getElementById('ambientParticles');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const PARTICLE_COUNT = 35;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.2;
+                    this.opacity = Math.random() * 0.25 + 0.05;
+                    this.hue = Math.random() > 0.5 ? 240 : 200;
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = Math.random() * 0.02 + 0.005;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < -20 || this.x > canvas.width + 20 ||
+                        this.y < -20 || this.y > canvas.height + 20) this.reset();
+                }
+                draw() {
+                    const op = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 70%, 75%, ${op})`; ctx.fill();
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 70%, 75%, ${op * 0.15})`; ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- CURSOR GLOW TRACKER ---
+        const glow = document.getElementById('cursorGlow');
+        if (glow) {
+            let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; glow.style.opacity = '1'; });
+            document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+            function updateGlow() {
+                glowX += (mouseX - glowX) * 0.08;
+                glowY += (mouseY - glowY) * 0.08;
+                glow.style.left = glowX + 'px';
+                glow.style.top = glowY + 'px';
+                requestAnimationFrame(updateGlow);
+            }
+            updateGlow();
+        }
+
+        // --- INTERACTIVE CARD TILT ---
+        function addTiltEffect(selector) {
+            document.addEventListener('mousemove', (e) => {
+                document.querySelectorAll(selector).forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const dx = e.clientX - (rect.left + rect.width / 2);
+                    const dy = e.clientY - (rect.top + rect.height / 2);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 400) {
+                        const i = 1 - (dist / 400);
+                        card.style.transform = `perspective(800px) rotateX(${-(dy / rect.height) * 3 * i}deg) rotateY(${(dx / rect.width) * 3 * i}deg) translateY(-${3 * i}px)`;
+                    }
+                });
+            });
+            document.addEventListener('mouseleave', () => {
+                document.querySelectorAll(selector).forEach(c => { c.style.transform = ''; });
+            });
+        }
+
+        addTiltEffect('.guide-card');
+    })();
+    </script>
+</body>
+</html>
