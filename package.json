@@ -1,9 +1,0 @@
-{
-  "name": "afri-pvp-tierlist",
-  "version": "1.0.0",
-  "description": "Website for Afri-PvP Tierlist",
-  "main": "index.html",
-  "dependencies": {
-    "mongodb": "^6.3.0"
-  }
-}
