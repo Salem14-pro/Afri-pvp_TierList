@@ -1810,13 +1810,18 @@ body::after {
 
     /* Header */
     .header {
-        height: 56px;
+        height: 48px;
     }
 
     .header-container {
         padding: 0 16px;
         flex-direction: row;
-        gap: 12px;
+        gap: 8px;
+    }
+
+    .logo-icon {
+        width: 22px;
+        height: 22px;
     }
 
     .logo-text {
@@ -1860,8 +1865,8 @@ body::after {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        width: 30px;
-        height: 20px;
+        width: 22px;
+        height: 14px;
         background: none;
         border: none;
         cursor: pointer;
@@ -1871,7 +1876,7 @@ body::after {
 
     .menu-toggle span {
         width: 100%;
-        height: 2px;
+        height: 1.5px;
         background: var(--text-primary);
         border-radius: 2px;
         transition: all 0.3s var(--ease-fluid);
