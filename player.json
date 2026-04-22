@@ -90,7 +90,7 @@
         }
     },
      {
-        "name": "Panther_playsmc",
+        "name": "PantherMc",
         "region": "NG",
         "tiers": {
             "sword": "-",
@@ -99,7 +99,7 @@
             "axe": "-",
             "mace": "-",
             "crystal": "-",
-            "uhc": "HT4",
+            "uhc": "LT3",
             "smp": "-",
             "diasmp": "-"
         }
