@@ -59,7 +59,7 @@
             "diasmp": "-"
         }
     },
-     {
+    {
         "name": "leoboltzx",
         "region": "NG",
         "tiers": {
@@ -89,7 +89,7 @@
             "diasmp": "LT3"
         }
     },
-     {
+    {
         "name": "Panther_playsmc",
         "region": "NG",
         "tiers": {
@@ -116,6 +116,21 @@
             "crystal": "-",
             "uhc": "-",
             "smp": "LT4",
+            "diasmp": "-"
+        }
+    },
+    {
+        "name": "PantherMC",
+        "region": "AF",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "LT3",
+            "smp": "-",
             "diasmp": "-"
         }
     }
