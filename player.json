@@ -59,7 +59,7 @@
             "diasmp": "-"
         }
     },
-     {
+    {
         "name": "leoboltzx",
         "region": "NG",
         "tiers": {
@@ -88,22 +88,7 @@
             "smp": "LT5",
             "diasmp": "LT3"
         }
-    },
-     {
-        "name": "PantherMc",
-        "region": "NG",
-        "tiers": {
-            "sword": "-",
-            "pot": "-",
-            "nethpot": "-",
-            "axe": "-",
-            "mace": "-",
-            "crystal": "-",
-            "uhc": "LT3",
-            "smp": "-",
-            "diasmp": "-"
-        }
-    },
+
     {
         "name": "Nexus_is_here",
         "region": "NG",
@@ -116,6 +101,21 @@
             "crystal": "-",
             "uhc": "-",
             "smp": "LT4",
+            "diasmp": "-"
+        }
+    },
+    {
+        "name": "PantherMC",
+        "region": "AF",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "LT3",
+            "smp": "-",
             "diasmp": "-"
         }
     }
