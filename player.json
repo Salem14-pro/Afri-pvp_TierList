@@ -88,7 +88,22 @@
             "smp": "LT5",
             "diasmp": "LT3"
         }
-
+    },
+    {
+        "name": "PantherMc",
+        "region": "NG",
+        "tiers": {
+            "sword": "-",
+            "pot": "-",
+            "nethpot": "-",
+            "axe": "-",
+            "mace": "-",
+            "crystal": "-",
+            "uhc": "LT3",
+            "smp": "-",
+            "diasmp": "-"
+        }
+    },
     {
         "name": "Nexus_is_here",
         "region": "NG",
@@ -106,7 +121,7 @@
     },
     {
         "name": "PantherMC",
-        "region": "AF",
+        "region": "NG",
         "tiers": {
             "sword": "-",
             "pot": "-",
